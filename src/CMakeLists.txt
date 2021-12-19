@@ -7,7 +7,7 @@ include(GNUInstallDirs)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-add_executable(othello main.cpp)
+add_executable(othello main.cpp helper.h game.h)
 
 add_custom_target(run COMMAND othello)
 
