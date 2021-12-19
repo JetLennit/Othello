@@ -1,16 +1,18 @@
+const int SHOW_MOVES = false;
+
 class Game {
     public:
         int board[8][8] = {};
-        int moves[8][8] = {};
         std::vector<legal_play> legal_moves[2] = {};
         int turn = 1;
         Game();
-        int hasMove(int x, int y);
-        void draw();
-        void getMoves();
+        void refreshMoves();
         void addMove(int side, position pos, int direction); 
-        bool update();
+        legal_play getMove(int x, int y, int side);
+        int hasMove(int x, int y);
         bool place(position pos);
+        bool update();
+        void draw();
 };
 
 Game::Game() {
@@ -21,7 +23,7 @@ Game::Game() {
     board[4][3] = 2;
 }
 
-void Game::getMoves() {
+void Game::refreshMoves() {
     legal_moves[0].clear();
     legal_moves[1].clear();
 
@@ -85,44 +87,18 @@ void Game::addMove(int side, position pos, int direction) {
     }
 }
 
-bool Game::place(position pos) {
-    if(outOfBounds(pos))
-        return false;
-    
-    int has_move = hasMove(pos.x, pos.y);
-
-    if(has_move != turn && has_move != 3)
-        return false;
-
-    board[pos.x][pos.y] = turn;
-
+legal_play Game::getMove(int x, int y, int side) {
     legal_play play;
 
     std::vector<legal_play>::iterator p;
-    for (p = legal_moves[turn-1].begin(); p != legal_moves[turn-1].end(); ++p) {
-        if (p->pos.x == pos.x && p->pos.y == pos.y) {
+    for (p = legal_moves[side-1].begin(); p != legal_moves[side-1].end(); ++p) {
+        if (p->pos.x == x && p->pos.y == y) {
             play = *p;
+            break;
         }
     }
 
-    for (int i = 0; i < 8; i++) {
-        if (!play.directions[i])
-            continue;
-
-        position movedpos = pos;
-
-        while (true) {
-            movedpos.x += DIRECTIONS[i][0]; 
-            movedpos.y += DIRECTIONS[i][1]; 
-            if (board[movedpos.x][movedpos.y] == turn)
-                break;
-
-            std::cout << movedpos.x << ' ' << movedpos.y << ' ' << i << std::endl;
-            board[movedpos.x][movedpos.y] = turn;
-        }
-    }
-
-    return true;
+    return play;
 }
 
 int Game::hasMove(int x, int y) {
@@ -140,12 +116,46 @@ int Game::hasMove(int x, int y) {
     return has_move;
 }
 
+bool Game::place(position pos) {
+    if(outOfBounds(pos))
+        return false;
+    
+    int has_move = hasMove(pos.x, pos.y);
+
+    if(has_move != turn && has_move != 3)
+        return false;
+
+    board[pos.x][pos.y] = turn;
+
+    legal_play play;
+
+    play = getMove(pos.x, pos.y, turn);
+
+    for (int i = 0; i < 8; i++) {
+        if (!play.directions[i])
+            continue;
+
+        position movedpos = pos;
+
+        while (true) {
+            movedpos.x += DIRECTIONS[i][0]; 
+            movedpos.y += DIRECTIONS[i][1]; 
+            if (board[movedpos.x][movedpos.y] == turn)
+                break;
+
+            board[movedpos.x][movedpos.y] = turn;
+        }
+    }
+
+    return true;
+}
+
 bool Game::update() {
     std::string input;
 
     bool turn_over = false;
     
-    while(!turn_over) {
+    while(!turn_over && !legal_moves[turn].empty()) {
         std::cout << "Please enter coordinates (xy): ";
         std::cin >> input;
 
@@ -156,12 +166,10 @@ bool Game::update() {
         pos.x = input.at(0)-'a';
         pos.y = input.at(1)-'0';
 
-        std::cout << pos.x << ' ' << pos.y << std::endl;
-
         turn_over = place(pos);
     }
 
-    turn = (turn == 1) ? 2 : 1;
+    turn = (!(turn-1)) + 1;
 
     return true;
 }
@@ -183,7 +191,7 @@ void Game::draw() {
                     std::cout << 'B';
                     break;
                 case 0:
-                    if (hasMove(x, y) == turn) std::cout << '*';
+                    if (hasMove(x, y) == turn && SHOW_MOVES) std::cout << '*';
                     else std::cout << ' ';
                     break;
             }
