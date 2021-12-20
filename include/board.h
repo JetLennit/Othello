@@ -1,4 +1,6 @@
-#pragma once
+#ifndef BOARD_H
+#define BOARD_H
+
 #include "helper.h"
 
 class Board {
@@ -16,3 +18,5 @@ class Board {
         int tiles[8][8] = {};
         std::vector<legal_play> legal_moves[2] = {};
 };
+
+#endif

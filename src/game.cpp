@@ -12,7 +12,7 @@ bool Game::update() {
         std::cout << "Please enter coordinates (xy): ";
         std::cin >> input;
 
-        while(input.length() < 2) 
+        if (input.length() < 2) 
             return false;
 
         int x = input.at(0)-'a';
@@ -24,6 +24,11 @@ bool Game::update() {
     turn = (!(turn-1)) + 1;
 
     board.refreshMoves();
+
+    if (!board.hasMove(1) && !board.hasMove(2)) {
+        finish();
+        return false;
+    }
 
     return true;
 }
@@ -54,4 +59,31 @@ void Game::draw() {
         std::cout << std::endl;
     }
     std::cout << "  a b c d e f g h" << std::endl << std::endl;
+}
+
+void Game::finish() {
+    int white_points = 0;
+    int black_points = 0;
+
+    for (int y = 0; y < 8; y++) {
+        for (int x = 0; x < 8; x++) {
+            switch (board.getTile(x, y)) {
+                case 1:
+                    white_points++;
+                    break;
+                case 2:
+                    black_points++;
+                    break;
+                case 0:
+                    break;
+            }
+        }
+    }
+
+    if (white_points > black_points) 
+        std::cout << "White wins!" << std::endl;
+    else if (black_points > white_points) 
+        std::cout << "Black wins!" << std::endl;
+    else
+        std::cout << "Draw!" << std::endl;
 }
