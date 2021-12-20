@@ -1,5 +1,4 @@
 #pragma once
-
 const int DIRECTIONS[8][2] = {
     {-1, -1},
     { 0, -1},
