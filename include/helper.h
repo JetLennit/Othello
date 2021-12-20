@@ -10,16 +10,12 @@ const int DIRECTIONS[8][2] = {
     { 1,  1}
 };
 
-struct position {
-    int x;
-    int y;
-};
-
 struct legal_play {
-    position pos;
+    int x = 0;
+    int y = 0;
     bool directions[8] = {};
 };
 
-void moveDirection(position &pos, int direction);
-bool outOfBounds(position pos); 
+void moveDirection(int &x, int &y, int direction);
+bool outOfBounds(int x, int y); 
 

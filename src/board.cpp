@@ -20,30 +20,31 @@ void Board::refreshMoves() {
             if (tiles[x][y]) 
                 continue;
 
-            position origin;
-            origin.x = x;
-            origin.y = y;
-            for (int i = 0; i < 8; i++) {
-                position pos = origin;
-                
-                moveDirection(pos, i);
+            int lx = 0;
+            int ly = 0;
 
-                if (outOfBounds(pos))
+            for (int i = 0; i < 8; i++) {
+                lx = x;
+                ly = y;
+                
+                moveDirection(lx, ly, i);
+
+                if (outOfBounds(lx, ly))
                     continue;
 
-                int otherside = tiles[pos.x][pos.y];
+                int otherside = tiles[lx][ly];
 
                 if(!otherside)  
                     continue;
 
                 while (true) {
-                    moveDirection(pos, i);
+                    moveDirection(lx, ly, i);
 
-                    if (outOfBounds(pos)) 
+                    if (outOfBounds(lx, ly)) 
                         break;
 
-                    if (tiles[pos.x][pos.y] && tiles[pos.x][pos.y] != otherside) {
-                        addMove(origin, i, tiles[pos.x][pos.y]);
+                    if (tiles[lx][ly] && tiles[lx][ly] != otherside) {
+                        addMove(x, y, i, tiles[lx][ly]);
                         break; 
                     }
                 } 
@@ -52,27 +53,33 @@ void Board::refreshMoves() {
     }
 }
 
-void Board::addMove(position pos, int direction, int side) {
+void Board::addMove(int x, int y, int direction, int side) {
     if (legal_moves[side-1].empty()) {
         legal_play play;
-        play.pos = pos;
+
+        play.x = x;
+        play.y = y;
+
         play.directions[direction] = true;
         legal_moves[side-1].push_back(play);
+        return;
+    }
+    
+    std::vector<legal_play>::iterator p;
+    for (p = legal_moves[side-1].begin(); p != legal_moves[side-1].end(); ++p) {
+        if (p->x == x && p->y == y) {
+            p->directions[direction] = true;
+            return;
+        }
     }
 
-    else {
-        std::vector<legal_play>::iterator p;
-        for (p = legal_moves[side-1].begin(); p != legal_moves[side-1].end(); ++p) {
-            if (p->pos.x == pos.x && p->pos.y == pos.y) {
-                p->directions[direction] = true;
-                return;
-            }
-        }
-        legal_play play;
-        play.pos = pos;
-        play.directions[direction] = true;
-        legal_moves[side-1].push_back(play);
-    }
+    legal_play play;
+
+    play.x = x;
+    play.y = y;
+
+    play.directions[direction] = true;
+    legal_moves[side-1].push_back(play);
 }
 
 legal_play Board::getMove(int x, int y, int side) {
@@ -80,7 +87,7 @@ legal_play Board::getMove(int x, int y, int side) {
 
     std::vector<legal_play>::iterator p;
     for (p = legal_moves[side-1].begin(); p != legal_moves[side-1].end(); ++p) {
-        if (p->pos.x == x && p->pos.y == y) {
+        if (p->x == x && p->y == y) {
             play = *p;
             break;
         }
@@ -90,13 +97,12 @@ legal_play Board::getMove(int x, int y, int side) {
 }
 
 int Board::checkMove(int x, int y) {
-    std::vector<legal_play>::iterator p;
-
     int checked_move = 0;
 
+    std::vector<legal_play>::iterator p;
     for (int i = 0; i <= 1; i++) {
         for (p = legal_moves[i].begin(); p != legal_moves[i].end(); ++p) {
-            if (p->pos.x == x && p->pos.y == y) {
+            if (p->x == x && p->y == y) {
                 checked_move += i+1;
             }
         }
@@ -104,34 +110,38 @@ int Board::checkMove(int x, int y) {
     return checked_move;
 }
 
-bool Board::place(position pos, int side) {
-    if(outOfBounds(pos))
+bool Board::place(int x, int y, int side) {
+    if(outOfBounds(x, y))
         return false;
     
-    int checked_move = checkMove(pos.x, pos.y);
+    int checked_move = checkMove(x, y);
 
     if(checked_move != side && checked_move != 3)
         return false;
 
-    tiles[pos.x][pos.y] = side;
+    tiles[x][y] = side;
 
     legal_play play;
 
-    play = getMove(pos.x, pos.y, side);
+    play = getMove(x, y, side);
+
+    int lx = x;
+    int ly = y;
 
     for (int i = 0; i < 8; i++) {
         if (!play.directions[i])
             continue;
 
-        position movedpos = pos;
+        int lx = x;
+        int ly = y;
 
         while (true) {
-            movedpos.x += DIRECTIONS[i][0]; 
-            movedpos.y += DIRECTIONS[i][1]; 
-            if (tiles[movedpos.x][movedpos.y] == side)
+            moveDirection(lx, ly, i);
+
+            if (tiles[lx][ly] == side || outOfBounds(lx, ly))
                 break;
 
-            tiles[movedpos.x][movedpos.y] = side;
+            tiles[lx][ly] = side;
         }
     }
 

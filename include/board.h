@@ -5,11 +5,11 @@ class Board {
     public:
         Board();
         void refreshMoves();
-        void addMove(position pos, int direction, int side); 
+        void addMove(int x, int y, int direction, int side); 
         legal_play getMove(int x, int y, int side);
         int checkMove(int x, int y);
         bool hasMove(int side);
-        bool place(position pos, int side);
+        bool place(int x, int y, int side);
         int getTile(int x, int y);
 
     private:

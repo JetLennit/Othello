@@ -1,10 +1,10 @@
 #include "helper.h"
 
-void moveDirection(position &pos, int direction){
-    pos.x += DIRECTIONS[direction][0];
-    pos.y += DIRECTIONS[direction][1];
+void moveDirection(int &x, int &y, int direction){
+    x += DIRECTIONS[direction][0];
+    y += DIRECTIONS[direction][1];
 }
 
-bool outOfBounds(position pos) {
-    return (pos.x < 0 || pos.y < 0 || pos.x == 8 || pos.y == 8);
+bool outOfBounds(int x, int y) {
+    return (x < 0 || y < 0 || x == 8 || y == 8);
 }

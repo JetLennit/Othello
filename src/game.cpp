@@ -15,11 +15,10 @@ bool Game::update() {
         while(input.length() < 2) 
             return false;
 
-        position pos;
-        pos.x = input.at(0)-'a';
-        pos.y = input.at(1)-'0';
+        int x = input.at(0)-'a';
+        int y = input.at(1)-'0';
 
-        turn_over = board.place(pos, turn);
+        turn_over = board.place(x, y, turn);
     }
 
     turn = (!(turn-1)) + 1;
@@ -31,7 +30,6 @@ bool Game::update() {
 
 void Game::draw() {
     std::string turn_name = (turn == 1) ? "White" : "Black";
-
     std::cout << "   " << turn_name << "'s turn!" << std::endl;
 
     std::cout << "  a b c d e f g h" << std::endl;
