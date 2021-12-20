@@ -6,19 +6,27 @@ bool Game::update() {
 
     std::string input;
 
-    bool turn_over = false;
-    
-    while(!turn_over && board.hasMove(turn)) {
-        std::cout << "Please enter coordinates (xy): ";
+    while(board.hasMove(turn)) {
+        std::cout << "Please enter coordinates \"xy\": ";
         std::cin >> input;
 
-        if (input.length() < 2) 
-            return false;
+        if (input.length() != 2) {
+            std::cout << "Invalid response. Enter x as a letter and y as a number." << std::endl;
+            continue;
+        }
 
         int x = input.at(0)-'a';
         int y = input.at(1)-'0';
 
-        turn_over = board.place(x, y, turn);
+        if (outOfBounds(x, y)) {
+            std::cout << "Invalid response. Enter x as a letter and y as a number." << std::endl;
+            continue;
+        }
+
+        if (board.place(x, y, turn))
+            break;
+
+        std::cout << "Move not possible." << std::endl;
     }
 
     turn = (!(turn-1)) + 1;
