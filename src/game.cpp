@@ -18,7 +18,7 @@ bool Game::update() {
         int x = input.at(0)-'a';
         int y = input.at(1)-'0';
 
-        if (outOfBounds(x, y)) {
+        if (board.outOfBounds(x, y)) {
             std::cout << "Invalid response. Enter x as a letter and y as a number." << std::endl;
             continue;
         }

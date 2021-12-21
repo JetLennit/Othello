@@ -1,7 +1,22 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include "helper.h"
+const int DIRECTIONS[8][2] = {
+    {-1, -1},
+    { 0, -1},
+    { 1, -1},
+    {-1,  0},
+    { 1,  0},
+    {-1,  1},
+    { 0,  1},
+    { 1,  1}
+};
+
+struct legal_play {
+    int x = 0;
+    int y = 0;
+    bool directions[8] = {};
+};
 
 class Board {
     public:
@@ -13,6 +28,8 @@ class Board {
         bool hasMove(int side);
         bool place(int x, int y, int side);
         int getTile(int x, int y);
+        void moveDirection(int &x, int &y, int direction);
+        bool outOfBounds(int x, int y); 
 
     private:
         int tiles[8][8] = {};
