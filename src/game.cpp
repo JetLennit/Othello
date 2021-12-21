@@ -2,16 +2,20 @@
 #include <vector>
 #include "game.h"
 
-bool Game::update() {
-
+bool Game::checkInput() {
     std::string input;
 
-    while(board.hasMove(turn)) {
+    while (true) {
         std::cout << "Please enter coordinates \"xy\": ";
         std::cin >> input;
 
         if (input.length() != 2) {
-            std::cout << "Invalid response. Enter x as a letter and y as a number." << std::endl;
+            if (input.at(0) == '?')
+                std::cout << "Enter x as a letter and y as a number or enter q to quit." << std::endl;
+            else if (input.at(0) == 'q')
+                return false;
+            else
+                std::cout << "Invalid response. Enter x as a letter and y as a number." << std::endl;
             continue;
         }
 
@@ -29,16 +33,20 @@ bool Game::update() {
         std::cout << "Move not possible." << std::endl;
     }
 
+    return true;
+}
+
+bool Game::update() {
+    if (!board.hasMove(1) && !board.hasMove(2)) 
+        return false;
+
+    bool has_quit = !checkInput();
+
     turn = (!(turn-1)) + 1;
 
     board.refreshMoves();
 
-    if (!board.hasMove(1) && !board.hasMove(2)) {
-        finish();
-        return false;
-    }
-
-    return true;
+    return !has_quit;
 }
 
 void Game::draw() {

@@ -10,5 +10,6 @@ int main() {
         if(!game.update())
             break;
     }
+    game.finish();
     std::cout << "Game exited" << std::endl;
 }

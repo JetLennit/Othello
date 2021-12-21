@@ -9,6 +9,7 @@ class Game {
     public:
         Board board;
         int turn = 2;
+        bool checkInput();
         bool update();
         void draw();
         void finish();
