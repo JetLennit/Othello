@@ -4,5 +4,3 @@ project(othello VERSION 0.1 LANGUAGES CXX)
 
 include_directories(include)
 add_subdirectory(src)
-
-set (CMAKE_CXX_FLAGS "-Wall")
