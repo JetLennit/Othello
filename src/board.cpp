@@ -138,7 +138,10 @@ bool Board::place(int x, int y, int side) {
         while (true) {
             moveDirection(lx, ly, i);
 
-            if (tiles[lx][ly] == side || outOfBounds(lx, ly))
+            if (outOfBounds(lx, ly))
+                break;
+
+            if (tiles[lx][ly] == side || tiles[lx][ly] == 0)
                 break;
 
             tiles[lx][ly] = side;

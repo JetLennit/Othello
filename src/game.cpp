@@ -1,5 +1,7 @@
 #include <iostream>
 #include <vector>
+#include <SDL.h>
+#include "math.h"
 #include "game.h"
 
 bool Game::checkInput() {
@@ -36,17 +38,22 @@ bool Game::checkInput() {
     return true;
 }
 
+bool Game::checkInputSDL(int x, int y) {
+    double relative_mouse_x = x/100;
+    double relative_mouse_y = y/100;
+
+    return board.place(floor(relative_mouse_x), floor(relative_mouse_y), turn);
+}
+
 bool Game::update() {
     if (!board.hasMove(1) && !board.hasMove(2)) 
         return false;
-
-    bool has_quit = !checkInput();
 
     turn = (!(turn-1)) + 1;
 
     board.refreshMoves();
 
-    return !has_quit;
+    return true;
 }
 
 void Game::draw() {
@@ -75,6 +82,30 @@ void Game::draw() {
         std::cout << std::endl;
     }
     std::cout << "  a b c d e f g h" << std::endl << std::endl;
+}
+
+void Game::drawSDL(SDL_Renderer* renderer) {
+    for (int y = 0; y < 8; y++) {
+        for (int x = 0; x < 8; x++) {
+            switch (board.getTile(x, y)) {
+                case 1:
+                    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+                    break;
+                case 2:
+                    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+                    break;
+                case 0:
+                    if (board.checkMove(x, y) == turn && SHOW_MOVES)
+                        SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
+                    else
+                        SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
+                    break;
+            }
+
+            SDL_Rect tile = {x*100, y*100, 100, 100};
+            SDL_RenderFillRect(renderer, &tile);
+        }
+    }
 }
 
 void Game::finish() {

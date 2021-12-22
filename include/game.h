@@ -12,6 +12,8 @@ class Game {
         bool checkInput();
         bool update();
         void draw();
+        bool checkInputSDL(int x, int y);
+        void drawSDL(SDL_Renderer* renderer);
         void finish();
 };
 
