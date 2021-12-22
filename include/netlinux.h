@@ -9,11 +9,13 @@
 #include <vector>
 #include <iostream>
 
+#include "game.h"
+
 class Client {
 
 };
 
-class Server {
+class Server: public Game {
     public:
         Server();
         void closeServer();
