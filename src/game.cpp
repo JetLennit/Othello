@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <SDL.h>
-#include "math.h"
+#include <math.h>
 #include "game.h"
 
 bool Game::checkInput() {
