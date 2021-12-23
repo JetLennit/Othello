@@ -56,6 +56,8 @@ int graphical() {
                     SDL_GetMouseState(&mouse_x, &mouse_y);
                     if(game.checkInputSDL(mouse_x, mouse_y) && !game.over)
                         game.update();
+                    else if (game.over)
+                        game = Game();
                     break;
             }
         }
@@ -105,6 +107,7 @@ int main(int argc, char *argv[]) {
                     //for network code later
                     std::cout << "Hosting" << std::endl;
                     break;
+
                 case 'h':
                 case '?':
                     help();

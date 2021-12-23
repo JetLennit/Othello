@@ -85,7 +85,8 @@ void Game::update() {
 }
 
 void Game::drawSDL(SDL_Renderer* renderer) {
-    SDL_SetRenderDrawColor(renderer, 5, 25, 20, 10);
+    //SDL_SetRenderDrawColor(renderer, 5, 25, 20, 10);
+    SDL_SetRenderDrawColor(renderer, 10, 50, 40, 255);
     SDL_RenderClear(renderer);
     for (int y = 0; y < 8; y++) {
         for (int x = 0; x < 8; x++) {
@@ -112,7 +113,8 @@ void Game::drawSDL(SDL_Renderer* renderer) {
                         SDL_RenderFillRect(renderer, &minisquare);
                     }
                     else {
-                        SDL_SetRenderDrawColor(renderer, 10, 50, 40, 255);
+                        //SDL_SetRenderDrawColor(renderer, 10, 50, 40, 255);
+                        SDL_SetRenderDrawColor(renderer, 27, 135, 108, 255);
                         SDL_RenderFillRect(renderer, &square);
                     }
                     break;
