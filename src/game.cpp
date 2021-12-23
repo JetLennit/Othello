@@ -38,24 +38,6 @@ bool Game::checkInput() {
     return true;
 }
 
-bool Game::checkInputSDL(int x, int y) {
-    double relative_mouse_x = x/100;
-    double relative_mouse_y = y/100;
-
-    return board.place(floor(relative_mouse_x), floor(relative_mouse_y), turn);
-}
-
-bool Game::update() {
-    if (!board.hasMove(1) && !board.hasMove(2)) 
-        return false;
-
-    turn = (!(turn-1)) + 1;
-
-    board.refreshMoves();
-
-    return true;
-}
-
 void Game::draw() {
     std::string turn_name = (turn == 1) ? "White" : "Black";
     std::cout << "   " << turn_name << "'s turn!" << std::endl;
@@ -84,28 +66,65 @@ void Game::draw() {
     std::cout << "  a b c d e f g h" << std::endl << std::endl;
 }
 
+bool Game::checkInputSDL(int x, int y) {
+    double relative_mouse_x = (x-X_OFFSET)/80;
+    double relative_mouse_y = (y-Y_OFFSET)/80;
+
+    return board.place(floor(relative_mouse_x), floor(relative_mouse_y), turn);
+}
+
+void Game::update() {
+    turn = (!(turn-1)) + 1;
+
+    board.refreshMoves();
+
+    if (!board.hasMove(1) && !board.hasMove(2)) 
+        finish();
+    else if (!board.hasMove(turn))
+        update();
+}
+
 void Game::drawSDL(SDL_Renderer* renderer) {
+    SDL_SetRenderDrawColor(renderer, 5, 25, 20, 10);
+    SDL_RenderClear(renderer);
     for (int y = 0; y < 8; y++) {
         for (int x = 0; x < 8; x++) {
+            SDL_Rect square = {x*SCALE+5+X_OFFSET, y*SCALE+5+Y_OFFSET, SCALE-10, SCALE-10};
             switch (board.getTile(x, y)) {
                 case 1:
                     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+                    SDL_RenderFillRect(renderer, &square);
                     break;
                 case 2:
                     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+                    SDL_RenderFillRect(renderer, &square);
                     break;
                 case 0:
-                    if (board.checkMove(x, y) == turn && SHOW_MOVES)
-                        SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
-                    else
-                        SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
+                    int checked = board.checkMove(x, y);
+                    if ((checked == turn || checked == 3) && SHOW_MOVES) {
+                        SDL_SetRenderDrawColor(renderer, 27, 135, 108, 255);
+                        SDL_RenderFillRect(renderer, &square);
+                        SDL_Rect minisquare = {x*SCALE+20+X_OFFSET, y*SCALE+20+Y_OFFSET, SCALE-40, SCALE-40};
+                        if (turn == 1)
+                            SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+                        else
+                            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+                        SDL_RenderFillRect(renderer, &minisquare);
+                    }
+                    else {
+                        SDL_SetRenderDrawColor(renderer, 10, 50, 40, 255);
+                        SDL_RenderFillRect(renderer, &square);
+                    }
                     break;
             }
-
-            SDL_Rect tile = {x*100, y*100, 100, 100};
-            SDL_RenderFillRect(renderer, &tile);
         }
     }
+    SDL_Rect turnbar = {0, 0, 640, Y_OFFSET};
+    if (turn == 1)
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    else
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderFillRect(renderer, &turnbar);
 }
 
 void Game::finish() {
@@ -133,4 +152,6 @@ void Game::finish() {
         std::cout << "Black wins!" << std::endl;
     else
         std::cout << "Draw!" << std::endl;
+
+    over = true;
 }

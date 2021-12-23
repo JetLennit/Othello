@@ -3,8 +3,8 @@
 #include <SDL.h>
 #include <game.h>
 
-const int SCREEN_WIDTH = 800;
-const int SCREEN_HEIGHT = 800;
+const int SCREEN_WIDTH = 640;
+const int SCREEN_HEIGHT = 660;
 
 int main() {
     Game game;
@@ -25,6 +25,7 @@ int main() {
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     bool quit = false;
+    bool gameover = false;
     int mouse_x, mouse_y;
     while (!quit){
         SDL_Event event;
@@ -35,15 +36,12 @@ int main() {
                     break;
                 case SDL_MOUSEBUTTONDOWN:
                     SDL_GetMouseState(&mouse_x, &mouse_y);
-                    if(game.checkInputSDL(mouse_x, mouse_y))
-                        if(!game.update()) 
-                            quit = true;
+                    if(game.checkInputSDL(mouse_x, mouse_y) && !game.over)
+                        game.update();
                     break;
             }
         }
 
-
-        SDL_RenderClear(renderer);
         game.drawSDL(renderer);
         SDL_RenderPresent(renderer);
     }  
