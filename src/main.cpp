@@ -11,13 +11,13 @@ int main() {
 
     SDL_Window* window = NULL;
     SDL_Renderer* renderer = NULL;
-    if( SDL_Init( SDL_INIT_VIDEO ) < 0 ) {
+    if (SDL_Init( SDL_INIT_VIDEO ) < 0) {
         std::cout << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
         return -1;
     }
 
-    window = SDL_CreateWindow( "Othello", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
-    if( window == NULL ) {
+    window = SDL_CreateWindow("Othello", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    if (window == NULL) {
         std::cout << "Window could not be created! SDL_Error: " << SDL_GetError() << std::endl;
         return -1;
     }

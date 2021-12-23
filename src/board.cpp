@@ -155,6 +155,11 @@ int Board::getTile(int x, int y) {
     return tiles[x][y];
 }
 
+void Board::setTile(int x, int y, int side) {
+    if (!outOfBounds(x, y))
+        tiles[x][y] = side;
+}
+
 bool Board::hasMove(int side) {
     return !legal_moves[side-1].empty();
 }

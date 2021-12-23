@@ -119,12 +119,15 @@ void Game::drawSDL(SDL_Renderer* renderer) {
             }
         }
     }
-    SDL_Rect turnbar = {0, 0, 640, Y_OFFSET};
     if (turn == 1)
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    else
+    else if (turn == 2)
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-    SDL_RenderFillRect(renderer, &turnbar);
+
+    if (turn) {
+        SDL_Rect turnbar = {0, 0, 640, Y_OFFSET};
+        SDL_RenderFillRect(renderer, &turnbar);
+    }
 }
 
 void Game::finish() {
@@ -146,12 +149,17 @@ void Game::finish() {
         }
     }
 
+    int winner = 0;
     if (white_points > black_points) 
-        std::cout << "White wins!" << std::endl;
+        winner = 1;
     else if (black_points > white_points) 
-        std::cout << "Black wins!" << std::endl;
-    else
-        std::cout << "Draw!" << std::endl;
+        winner = 2;
+    
+    turn = winner;
+
+    for (int y = 0; y < 8; y++) 
+        for (int x = 0; x < 8; x++) 
+            board.setTile(x, y, winner);
 
     over = true;
 }

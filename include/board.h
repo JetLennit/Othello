@@ -28,6 +28,7 @@ class Board {
         bool hasMove(int side);
         bool place(int x, int y, int side);
         int getTile(int x, int y);
+        void setTile(int x, int y, int side);
         void moveDirection(int &x, int &y, int direction);
         bool outOfBounds(int x, int y); 
 
