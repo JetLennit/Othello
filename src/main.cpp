@@ -15,7 +15,6 @@ int textual() {
         if(!game.checkInput())
             break;
         game.update();
-        break;
     }
     game.finish();
     game.draw();
@@ -64,6 +63,8 @@ int graphical() {
 
         game.drawSDL(renderer);
         SDL_RenderPresent(renderer);
+
+        SDL_Delay(1000/30);
     }  
 
     game.finish();

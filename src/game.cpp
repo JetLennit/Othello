@@ -85,12 +85,16 @@ void Game::update() {
 }
 
 void Game::drawSDL(SDL_Renderer* renderer) {
-    //SDL_SetRenderDrawColor(renderer, 5, 25, 20, 10);
     SDL_SetRenderDrawColor(renderer, 10, 50, 40, 255);
     SDL_RenderClear(renderer);
+
     for (int y = 0; y < 8; y++) {
         for (int x = 0; x < 8; x++) {
-            SDL_Rect square = {x*SCALE+5+X_OFFSET, y*SCALE+5+Y_OFFSET, SCALE-10, SCALE-10};
+            SDL_Rect backsquare = {x*SCALE+5+X_OFFSET, y*SCALE+5+Y_OFFSET, SCALE-10, SCALE-10};
+            SDL_SetRenderDrawColor(renderer, 27, 135, 108, 255);
+            SDL_RenderFillRect(renderer, &backsquare);
+
+            SDL_Rect square = {x*SCALE+8+X_OFFSET, y*SCALE+8+Y_OFFSET, SCALE-16, SCALE-16};
             switch (board.getTile(x, y)) {
                 case 1:
                     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
@@ -103,30 +107,24 @@ void Game::drawSDL(SDL_Renderer* renderer) {
                 case 0:
                     int checked = board.checkMove(x, y);
                     if ((checked == turn || checked == 3) && SHOW_MOVES) {
-                        SDL_SetRenderDrawColor(renderer, 27, 135, 108, 255);
-                        SDL_RenderFillRect(renderer, &square);
-                        SDL_Rect minisquare = {x*SCALE+20+X_OFFSET, y*SCALE+20+Y_OFFSET, SCALE-40, SCALE-40};
+                        SDL_Rect minisquare = {x*SCALE+22+X_OFFSET, y*SCALE+22+Y_OFFSET, SCALE-44, SCALE-44};
                         if (turn == 1)
                             SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
                         else
                             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
                         SDL_RenderFillRect(renderer, &minisquare);
                     }
-                    else {
-                        //SDL_SetRenderDrawColor(renderer, 10, 50, 40, 255);
-                        SDL_SetRenderDrawColor(renderer, 27, 135, 108, 255);
-                        SDL_RenderFillRect(renderer, &square);
-                    }
                     break;
             }
         }
     }
-    if (turn == 1)
-        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    else if (turn == 2)
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
     if (turn) {
+        if (turn == 1)
+            SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        else if (turn == 2)
+            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+
         SDL_Rect turnbar = {0, 0, 640, Y_OFFSET};
         SDL_RenderFillRect(renderer, &turnbar);
     }
