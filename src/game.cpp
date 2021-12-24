@@ -84,7 +84,7 @@ void Game::update() {
         update();
 }
 
-void Game::drawSDL(SDL_Renderer* renderer) {
+void Game::drawSDL(SDL_Renderer *renderer) {
     SDL_SetRenderDrawColor(renderer, 10, 50, 40, 255);
     SDL_RenderClear(renderer);
 
@@ -142,8 +142,6 @@ void Game::finish() {
                     break;
                 case 2:
                     black_points++;
-                    break;
-                case 0:
                     break;
             }
         }

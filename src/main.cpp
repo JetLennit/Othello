@@ -26,8 +26,8 @@ int textual() {
 int graphical() {
     Game game;
 
-    SDL_Window* window = NULL;
-    SDL_Renderer* renderer = NULL;
+    SDL_Window *window = NULL;
+    SDL_Renderer *renderer = NULL;
     if (SDL_Init( SDL_INIT_VIDEO ) < 0) {
         std::cout << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
         return -1;
@@ -42,7 +42,6 @@ int graphical() {
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     bool quit = false;
-    bool gameover = false;
     int mouse_x, mouse_y;
     while (!quit){
         SDL_Event event;

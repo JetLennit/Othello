@@ -9,5 +9,6 @@ include_directories(othello ${SDL2_INCLUDE_DIRS})
 add_executable(othello main.cpp game.cpp board.cpp)
 
 target_link_libraries(othello ${SDL2_LIBRARIES})
+target_compile_options(othello PRIVATE -Werror -Wall -Wextra)
 
 add_custom_target(run COMMAND othello)
