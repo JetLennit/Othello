@@ -26,3 +26,9 @@ This may only build on Unix... I've only tested on Arch Linux
            -t       Text mode            
            -d       Disable move hints   
            -h, -?   Print this screen    
+
+## Todo:
+
+- [x] Grahpics
+- [ ] Cross-platform networking
+- [ ] AI
