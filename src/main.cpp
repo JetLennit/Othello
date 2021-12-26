@@ -8,7 +8,7 @@
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 660;
 
-int textual() {
+int textual(Game &game) {
     std::cout << std::endl;
     Game game;
     while (true) {
@@ -24,8 +24,7 @@ int textual() {
     return 0;
 }
 
-int graphical() {
-    Game game;
+int graphical(Game &game) {
 
     SDL_Window *window = nullptr;
     SDL_Renderer *renderer = nullptr;
@@ -81,14 +80,17 @@ void help() {
               << "  ./othello [options]           " << std::endl << std::endl 
               << "Options:                        " << std::endl
               << "  -t       Text mode            " << std::endl
+              << "  -d       Disable move hints   " << std::endl
               << "  -c <ip>  Connect to host at ip" << std::endl
               << "  -s       Host server          " << std::endl
               << "  -h, -?   Print this screen    " << std::endl;
 }
 
 int main(int argc, char *argv[]) {
+    Game game;
+
     if (argc == 1) 
-        return graphical();
+        return graphical(game);
 
     bool graphics = true;
 
@@ -109,7 +111,9 @@ int main(int argc, char *argv[]) {
                     //for network code later
                     std::cout << "Hosting" << std::endl;
                     break;
-
+                case 'd':
+                    game.disableShowMoves();
+                    break;
                 case 'h':
                 case '?':
                     help();
@@ -120,8 +124,8 @@ int main(int argc, char *argv[]) {
     }
 
     if (!graphics)
-        return textual();
+        return textual(game);
 
-    return graphical();
+    return graphical(game);
 }
 
