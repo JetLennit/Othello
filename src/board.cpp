@@ -21,7 +21,9 @@ void Board::refreshMoves() {
             if (getTile(x, y)) 
                 continue;
 
-            int lx, ly, enemy_tile;
+            int lx = x;
+            int ly = y;
+            int enemy_tile = 0;
 
             for (int i = 0; i < 8; i++) {
                 lx = x;
@@ -38,7 +40,8 @@ void Board::refreshMoves() {
 
                     if (!getTile(lx, ly)) 
                         break;
-                    else if (getTile(lx, ly) != enemy_tile) {
+                    
+                    if (getTile(lx, ly) != enemy_tile) {
                         addMove(x, y, i, getTile(lx, ly));
                         break; 
                     }
@@ -116,7 +119,9 @@ bool Board::place(int x, int y, int side) {
 
     legal_play play = getMove(x, y, side);
 
-    int lx, ly;
+    int lx = x;
+    int ly = y;
+
     for (int i = 0; i < 8; i++) {
         if (!play.directions[i])
             continue;
@@ -140,8 +145,8 @@ bool Board::place(int x, int y, int side) {
 int Board::getTile(int x, int y) {
     if (!outOfBounds(x, y))
         return tiles[x][y];
-    else 
-        return 0;
+
+    return 0;
 }
 
 void Board::setTile(int x, int y, int side) {

@@ -1,7 +1,7 @@
+#include <SDL.h>
+#include <cstring>
 #include <iostream>
 #include <vector>
-#include <cstring>
-#include <SDL.h>
 
 #include "game.h"
 
@@ -27,15 +27,15 @@ int textual() {
 int graphical() {
     Game game;
 
-    SDL_Window *window = NULL;
-    SDL_Renderer *renderer = NULL;
+    SDL_Window *window = nullptr;
+    SDL_Renderer *renderer = nullptr;
     if (SDL_Init( SDL_INIT_VIDEO ) < 0) {
         std::cout << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
         return -1;
     }
 
     window = SDL_CreateWindow("Othello", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-    if (window == NULL) {
+    if (window == nullptr) {
         std::cout << "Window could not be created! SDL_Error: " << SDL_GetError() << std::endl;
         return -1;
     }
@@ -43,7 +43,8 @@ int graphical() {
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     bool quit = false;
-    int mouse_x, mouse_y;
+    int mouse_x = 0;
+    int mouse_y = 0;
     while (!quit){
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
@@ -53,9 +54,9 @@ int graphical() {
                     break;
                 case SDL_MOUSEBUTTONDOWN:
                     SDL_GetMouseState(&mouse_x, &mouse_y);
-                    if(game.checkInputSDL(mouse_x, mouse_y) && !game.over)
+                    if(game.checkInputSDL(mouse_x, mouse_y) && !game.isOver())
                         game.update();
-                    else if (game.over)
+                    else if (game.isOver())
                         game = Game();
                     break;
             }
@@ -118,11 +119,9 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    if (graphics)
-        return graphical();
-    else 
+    if (!graphics)
         return textual();
 
-    return 0;
+    return graphical();
 }
 
