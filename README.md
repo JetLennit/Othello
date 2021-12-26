@@ -2,18 +2,16 @@
 
 ## Requirements:
 
-- C++11 (although with minor modifications to "src/CMakeLists.txt" this is likely not true)
+- C++11 (although with minor modifications to "src/CMakeLists.txt" other versions should work)
 - CMake
 - SDL2
 
-This may only build on Unix... I've only tested on Arch Linux
+This may only build on Linux... I've only tested on Arch Linux.
 
 ## Building:
 
         cd build
-
         cmake ../
-
         cmake --build ./ 
         OR 
         cmake --build ./ --target run 
@@ -29,6 +27,6 @@ This may only build on Unix... I've only tested on Arch Linux
 
 ## Todo:
 
-- [x] Grahpics
+- [x] Graphics
 - [ ] Cross-platform networking
 - [ ] AI
