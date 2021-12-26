@@ -25,6 +25,4 @@ This may only build on Unix... I've only tested on Arch Linux
          Options:                        
            -t       Text mode            
            -d       Disable move hints   
-           -c <ip>  Connect to host at ip
-           -s       Host server          
            -h, -?   Print this screen    

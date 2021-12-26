@@ -80,8 +80,8 @@ void help() {
               << "Options:                        " << std::endl
               << "  -t       Text mode            " << std::endl
               << "  -d       Disable move hints   " << std::endl
-              << "  -c <ip>  Connect to host at ip" << std::endl
-              << "  -s       Host server          " << std::endl
+            //<< "  -c <ip>  Connect to host at ip" << std::endl
+            //<< "  -s       Host server          " << std::endl
               << "  -h, -?   Print this screen    " << std::endl;
 }
 
