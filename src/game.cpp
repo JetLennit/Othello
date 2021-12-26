@@ -2,6 +2,7 @@
 #include <vector>
 #include <SDL.h>
 #include <math.h>
+
 #include "game.h"
 
 bool Game::checkInput() {
@@ -67,8 +68,8 @@ void Game::draw() {
 }
 
 bool Game::checkInputSDL(int x, int y) {
-    double relative_mouse_x = (x-X_OFFSET)/80;
-    double relative_mouse_y = (y-Y_OFFSET)/80;
+    double relative_mouse_x = (((double) x)-X_OFFSET)/80;
+    double relative_mouse_y = (((double) y)-Y_OFFSET)/80;
 
     return board.place(floor(relative_mouse_x), floor(relative_mouse_y), turn);
 }

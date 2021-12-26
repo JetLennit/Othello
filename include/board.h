@@ -1,6 +1,8 @@
 #ifndef BOARD_H
 #define BOARD_H
 
+#include <vector>
+
 const int DIRECTIONS[8][2] = {
     {-1, -1},
     { 0, -1},

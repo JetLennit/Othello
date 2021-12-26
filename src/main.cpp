@@ -1,8 +1,9 @@
 #include <iostream>
 #include <vector>
-#include <string.h>
+#include <cstring>
 #include <SDL.h>
-#include <game.h>
+
+#include "game.h"
 
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 660;
