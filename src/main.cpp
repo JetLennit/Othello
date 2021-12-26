@@ -10,7 +10,7 @@ const int SCREEN_HEIGHT = 660;
 
 int textual(Game &game) {
     std::cout << std::endl;
-    Game game;
+
     while (true) {
         game.draw();
         if(!game.checkInput())
@@ -25,7 +25,6 @@ int textual(Game &game) {
 }
 
 int graphical(Game &game) {
-
     SDL_Window *window = nullptr;
     SDL_Renderer *renderer = nullptr;
     if (SDL_Init( SDL_INIT_VIDEO ) < 0) {
