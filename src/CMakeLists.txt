@@ -2,7 +2,7 @@ include(GNUInstallDirs)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
-set(CMAKE_EXPORT_COMPILE_COMMANDS true)
+set(CMAKE_EXPORT_COMPILE_COMMANDS True)
 
 find_package(SDL2 REQUIRED)
 include_directories(othello ${SDL2_INCLUDE_DIRS})

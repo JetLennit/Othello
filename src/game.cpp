@@ -1,7 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <SDL.h>
-#include <math.h>
+
+#include <cmath>
 
 #include "game.h"
 
@@ -33,6 +34,7 @@ bool Game::checkInput() {
         if (board.place(x, y, turn))
             break;
 
+
         std::cout << "Move not possible." << std::endl;
     }
 
@@ -55,7 +57,7 @@ void Game::draw() {
                     std::cout << 'B';
                     break;
                 case 0:
-                    if (board.checkMove(x, y) == turn && SHOW_MOVES) std::cout << '*';
+                    if (board.checkMove(x, y) == turn && showMoves) std::cout << '*';
                     else std::cout << ' ';
                     break;
             }
@@ -68,14 +70,14 @@ void Game::draw() {
 }
 
 bool Game::checkInputSDL(int x, int y) {
-    double relative_mouse_x = (((double) x)-X_OFFSET)/80;
-    double relative_mouse_y = (((double) y)-Y_OFFSET)/80;
+    double relative_mouse_x = (static_cast<double>(x)-X_OFFSET)/80;
+    double relative_mouse_y = (static_cast<double>(y)-Y_OFFSET)/80;
 
     return board.place(floor(relative_mouse_x), floor(relative_mouse_y), turn);
 }
 
 void Game::update() {
-    turn = (!(turn-1)) + 1;
+    turn = (1-(turn-1)) + 1;
 
     board.refreshMoves();
 
@@ -107,7 +109,7 @@ void Game::drawSDL(SDL_Renderer *renderer) {
                     break;
                 case 0:
                     int checked = board.checkMove(x, y);
-                    if ((checked == turn || checked == 3) && SHOW_MOVES) {
+                    if ((checked == turn || checked == 3) && showMoves) {
                         SDL_Rect minisquare = {x*SCALE+22+X_OFFSET, y*SCALE+22+Y_OFFSET, SCALE-44, SCALE-44};
                         if (turn == 1)
                             SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
@@ -120,7 +122,7 @@ void Game::drawSDL(SDL_Renderer *renderer) {
         }
     }
 
-    if (turn) {
+    if (turn != 0) {
         if (turn == 1)
             SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         else if (turn == 2)
@@ -161,4 +163,12 @@ void Game::finish() {
             board.setTile(x, y, winner);
 
     over = true;
+}
+
+bool Game::isOver() const {
+    return over;
+}
+
+void Game::disableShowMoves() {
+    showMoves = false;
 }
